@@ -95,7 +95,7 @@ details.ai{margin:12px 0;font-size:14px}details.ai input{border:1px solid var(--
 <script>
 var items=[],$=function(i){return document.getElementById(i)};
 function say(t,me){var d=document.createElement('div');d.className='msg'+(me?' me':'');d.textContent=t;$('log').appendChild(d);d.scrollIntoView({block:'nearest'})}
-say('Merhaba Dt. İrem. Fotoğraf ve videoları göstermek istediğiniz sırayla ekleyin, her birinin yanına kısa bir not yazın. Yapay zekâ sohbetini kullanmak için en alttaki "Yapay zekâ sohbeti" bölümünden Anthropic API anahtarınızı girin; ben sıra ve notları alıyorum.');
+say('Merhaba Dt. İrem. Fotoğraf ve videoları göstermek istediğiniz sırayla ekleyin, her birinin yanına kısa bir not yazın. Bu sürümde yapay zekâ sohbeti henüz bağlı değil; ben yalnızca sıra ve notları alıyorum.');
 
 var TYPES=[['photo','Fotoğraf (yaklaşma)'],['wipe','Önce→Sonra geçişi (bir önceki fotoğrafla)'],['implant','İmplant yerleştirme'],['settle','Dişler tek tek yerine otursun (lamine/zirkon)'],['golden','Altın oran analizi (siyah ekran)']];
 function render(){
@@ -534,7 +534,7 @@ var hist=[];
 function askAI(v){var mk='ac'+new Date().toISOString().slice(0,7),c=+ls(mk)||0;if(c>=(+ls('alim')||100)){say('Aylık mesaj sınırına ulaşıldı. Ayarlardan sınırı yükseltebilirsiniz.');return}
  ls(mk,String(c+1));aiSt();var last=items[items.length-1];hist.push({role:'user',content:v});hist=hist.slice(-8);
  var sys='Sen Dt. İrem Sarp\'ın diş hekimliği Reels stüdyosu asistanısın. Kısa, sıcak Türkçe cevap ver. Kullanıcı son yüklenen dosya için bir not yazıyor olabilir. SADECE JSON döndür: {"cevap":"...","tur":"photo|wipe|implant|settle|golden|","not":"..."}. tur: yaklaşma=photo, önce-sonra geçişi=wipe, implant yerleştirme=implant, dişler yerine otursun=settle, altın oran analizi=golden; emin değilsen boş bırak. not: videoda görünecek 40 karakteri geçmeyen kısa başlık, istenmediyse boş. Dosya sayısı: '+items.length+(last?', son dosya türü: '+last.type:'')+'.';
- fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':ls('ak'),'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-3-5-haiku-20241022',max_tokens:400,system:sys,messages:hist})})
+ fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':ls('ak'),'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-haiku-5-5',max_tokens:400,system:sys,messages:hist})})
  .then(function(r){return r.json()}).then(function(d){if(d.error)throw new Error(d.error.message);var t=(d.content||[]).map(function(x){return x.text||''}).join(''),j;try{j=JSON.parse(t.replace(/```json|```/g,'').trim())}catch(e){j={cevap:t}}
   hist.push({role:'assistant',content:t});say(j.cevap||'Tamam.');
   if(last&&j.tur&&TYPES.some(function(x){return x[0]===j.tur})&&!last.video){last.type=j.tur;if(j.tur!=='photo'&&j.tur!=='implant'&&last.rot===undefined&&last.el.naturalWidth)last.rot=last.el.naturalWidth>last.el.naturalHeight?90:0}
