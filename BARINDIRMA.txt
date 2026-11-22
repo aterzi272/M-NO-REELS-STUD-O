@@ -1,0 +1,6 @@
+Kendi barındırma (ücretsiz):
+1) netlify.com/drop adresine reels-studyosu klasörünü sürükleyin (ya da GitHub Pages).
+2) Verilen https bağlantısını telefonda açın.
+3) iPhone: Paylaş > Ana Ekrana Ekle. Android: menü > Uygulamayı yükle.
+Not: Videoyu indirme ve yapay zekâ sohbeti en güvenilir burada çalışır.
+Kodu düzenlemek için index.html dosyasını herhangi bir metin editöründe açın; yeni kodlar 'Yeni: dil, şablon, altın oran' yorumundan sonra başlar.
